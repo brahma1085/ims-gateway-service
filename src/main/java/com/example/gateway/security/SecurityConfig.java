@@ -11,25 +11,36 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 @EnableWebFluxSecurity
 public class SecurityConfig {
 
-	private static final String USER = "ROLE_USER";
-	private static final String ADMIN = "ROLE_ADMIN";
+    private static final String USER = "ROLE_USER";
+    private static final String ADMIN = "ROLE_ADMIN";
 
-	private final ReactiveJwtAuthenticationConverter jwtAuthenticationConverter;
+    private final ReactiveJwtAuthenticationConverter jwtAuthenticationConverter;
 
-	public SecurityConfig(ReactiveJwtAuthenticationConverter jwtAuthenticationConverter) {
-		this.jwtAuthenticationConverter = jwtAuthenticationConverter;
-	}
+    public SecurityConfig(ReactiveJwtAuthenticationConverter jwtAuthenticationConverter) {
+        this.jwtAuthenticationConverter = jwtAuthenticationConverter;
+    }
 
-	@Bean
-	public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
+    @Bean
+    public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
 
-		return http.csrf(ServerHttpSecurity.CsrfSpec::disable)
-				.authorizeExchange(ex -> ex.pathMatchers("/actuator/**", "/swagger-ui/**", "/v3/api-docs/**")
-						.permitAll().pathMatchers("/api/inventory/**","/api/admin/**").hasAuthority(ADMIN)
-						.pathMatchers("/api/orders/**", "/api/customers/**").hasAnyAuthority(ADMIN, USER).anyExchange()
-						.authenticated())
-				.oauth2ResourceServer(
-						oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter)))
-				.build();
-	}
+        return http.csrf(ServerHttpSecurity.CsrfSpec::disable)
+                .authorizeExchange(ex -> ex.pathMatchers("/actuator/**", "/swagger-ui/**", "/v3/api-docs/**")
+                        .permitAll().pathMatchers(
+                                "/",
+                                "/index.html",
+                                "/favicon.ico",
+                                "/*.css",
+                                "/*.js",
+                                "/assets/**",
+                                "/browser/**",
+                                "/**/*.css",
+                                "/**/*.js"
+                        ).permitAll().
+                        pathMatchers("/api/inventory/**", "/api/admin/**").hasAuthority(ADMIN)
+                        .pathMatchers("/api/orders/**", "/api/customers/**").hasAnyAuthority(ADMIN, USER).anyExchange()
+                        .authenticated())
+                .oauth2ResourceServer(
+                        oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter)))
+                .build();
+    }
 }
