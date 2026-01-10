@@ -28,7 +28,7 @@ spring:
         - id: angular-ui
           uri: http://angular-ui:80
           predicates:
-            - Path=/**
+            - Path=/**,/assets/**,/favicon.ico,/**/*.js,/**/*.css,/
       globalcors:
         cors-configurations:
           '[/**]':
