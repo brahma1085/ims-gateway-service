@@ -24,7 +24,7 @@ public class SecurityConfig {
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
 
         return http.csrf(ServerHttpSecurity.CsrfSpec::disable)
-                .authorizeExchange(ex -> ex.pathMatchers("/actuator/**", "/swagger-ui/**", "/v3/api-docs/**","/","/index.html","/favicon.ico","/*.css","/*.js","/assets/**","/browser/**","/**/*.css","/**/*.js")
+                .authorizeExchange(ex -> ex.pathMatchers("/actuator/**", "/swagger-ui/**", "/v3/api-docs/**", "/", "/index.html", "/favicon.ico", "/*.css", "/*.js", "/assets/**", "/browser/**")
                         .permitAll().pathMatchers("/api/inventory/**", "/api/admin/**").hasAuthority(ADMIN)
                         .pathMatchers("/api/orders/**", "/api/customers/**").hasAnyAuthority(ADMIN, USER).anyExchange()
                         .authenticated())
