@@ -25,10 +25,6 @@ spring:
           uri: http://customers-service:8083
           predicates:
             - Path=/api/customers/**,/swagger-ui/**,/v3/api-docs/**
-        - id: angular-ui
-          uri: http://angular-ui:80
-          predicates:
-            - Path=/**,/assets/**,/favicon.ico,/*.js,/,/*.css
       globalcors:
         cors-configurations:
           '[/**]':
